@@ -1,0 +1,40 @@
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  liquibase:
+    change-log: classpath:db/master.xml
+
+bot:
+  token: ${BOT_TOKEN}
+  updateMarksPeriod: 1h
+
+url:
+  login: http://diary.goroo-orsha.by/index.php?option=com_content&view=article&id=9&Itemid=12
+  marks: http://diary.goroo-orsha.by/index.php?option=com_content&view=article&id=10&Itemid=13
+
+message:
+  enterPhoneMessage: "Введите номер телефона (пример - +375121231212)"
+  enterPasswordMessage: "Введите пароль"
+  wrongCredentialsMessage: "Неправильный телефон или пароль"
+  noLinkedAccountsMessage: "У вас нет добавленных аккаунтов"
+  chooseAccountUserMessage: "Выберите аккаунт"
+  wrongNameMessage: "Неверное имя"
+  chooseSubjectMessage: "Выберите предмет"
+  marksBySubjectMessage: "Оценки по предмету %s: %s"
+  marksMessage: "Оценки %s:\n%s"
+  takeCookiesErrorMessage: "Произошла ошибка при попытке доступа к аккаунту %s"
+  accountWasAddedMessage: "Аккаунт был успешно добавлен"
+  accountListMessage: "Ваши аккаунты:\n%s"
+  chooseActionMessage: "Выберите действие"
+  addAccountAction: "Добавить аккаунт"
+  listAccountsAction: "Список аккаунтов"
+  showMarksAction: "Показать оценки"
+  newMarksMessage: "У %s новые оценки:\n%s"
+  removedMarksMessage: "У %s удалены оценки:\n%s"
+  allMarksOption: "Все"

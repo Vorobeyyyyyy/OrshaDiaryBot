@@ -44,7 +44,13 @@ public class MarkServiceImpl implements MarkService {
                 .filter(s -> s.getName().equals(mark.getSubject().getName()))
                 .findAny().ifPresentOrElse(
                         mark::setSubject,
-                        () -> mark.setSubject(subjectRepository.save(mark.getSubject()))));
+                        () -> persistAndSet(subjects, mark)));
         markRepository.saveAll(marks);
+    }
+
+    private void persistAndSet(List<Subject> subjects, Mark mark) {
+        Subject persistedSubject = subjectRepository.save(mark.getSubject());
+        subjects.add(persistedSubject);
+        mark.setSubject(persistedSubject);
     }
 }

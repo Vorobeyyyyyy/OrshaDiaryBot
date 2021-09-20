@@ -39,8 +39,6 @@ public class BotController {
     }
 
     private void handleUpdate(Update update) {
-        log.info("New update: {}", update);
-
         boolean isCallback = update.callbackQuery() != null;
         long chatId = !isCallback ? update.message().chat().id() : update.callbackQuery().message().chat().id();
         try {

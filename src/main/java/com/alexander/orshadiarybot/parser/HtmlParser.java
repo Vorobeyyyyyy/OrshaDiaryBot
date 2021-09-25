@@ -3,6 +3,7 @@ package com.alexander.orshadiarybot.parser;
 import com.alexander.orshadiarybot.model.domain.Mark;
 import com.alexander.orshadiarybot.model.domain.Subject;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -38,7 +39,7 @@ public class HtmlParser {
                 DateTimeFormatter.ofPattern("yyyy-M-d"));
         return element.select("tr").stream()
                 .map(tr -> tr.select("td"))
-                .filter(tds -> tds.size() == 3 && tds.get(2).hasText())
+                .filter(tds -> tds.size() == 3 && tds.get(2).hasText() && StringUtils.isNumeric(tds.get(2).text()))
                 .map(tds -> {
                     Mark mark = new Mark();
                     mark.setDate(date);

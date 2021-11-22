@@ -47,4 +47,8 @@ public class MessageProperty {
     private String removedMarksMessage = "%s have removed marks:\n%s";
 
     private String allMarksOption = "All";
+
+    private String quoterOption = "%s quoter";
+
+    private String chooseQuoterMessage = "Choose quoter";
 }

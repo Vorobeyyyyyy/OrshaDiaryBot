@@ -38,3 +38,10 @@ message:
   newMarksMessage: "У %s новые оценки:\n%s"
   removedMarksMessage: "У %s удалены оценки:\n%s"
   allMarksOption: "Все"
+  quoterOption: "%s четверть"
+  chooseQuoterMessage: "Выберите четверть"
+
+quoter:
+  quoterTwoBegin: 2021-11-07
+  quoterThreeBegin: 2022-01-01
+  quoterFourBegin: 2022-03-03

@@ -18,20 +18,23 @@ import java.util.Base64;
 public class ShowMarksCommandDto extends StagedCommandDto {
     private Long accountId;
     private Long subjectId;
+    private Integer quoter;
 
-    public ShowMarksCommandDto(int commandIndex, int stage, Long accountId, Long subjectId) {
+    public ShowMarksCommandDto(int commandIndex, int stage, Long accountId, Integer quoter, Long subjectId) {
         super(commandIndex, stage);
         this.accountId = accountId;
         this.subjectId = subjectId;
+        this.quoter = quoter;
     }
 
     @Override
     public String toByteString() {
-        byte[] bytes = ByteBuffer.allocate(24)
+        byte[] bytes = ByteBuffer.allocate(28)
                 .putInt(commandIndex)
                 .putInt(stage)
                 .putLong(accountId != null ? accountId : 0)
                 .putLong(subjectId != null ? subjectId : 0)
+                .putInt(quoter != null ? quoter : 0)
                 .array();
         return Base64.getEncoder().encodeToString(bytes);
     }
@@ -43,24 +46,29 @@ public class ShowMarksCommandDto extends StagedCommandDto {
                 .stage(byteBuffer.getInt())
                 .accountId(byteBuffer.hasRemaining() ? byteBuffer.getLong() : null)
                 .subjectId(byteBuffer.hasRemaining() ? byteBuffer.getLong() : null)
+                .quoter(byteBuffer.hasRemaining() ? byteBuffer.getInt() : null)
                 .build();
     }
 
     @Override
     public ShowMarksCommandDto withCommandIndex(int commandIndex) {
-        return this.commandIndex == commandIndex ? this : new ShowMarksCommandDto(commandIndex, this.stage, this.accountId, this.subjectId);
+        return this.commandIndex == commandIndex ? this : new ShowMarksCommandDto(commandIndex, this.stage, this.accountId, this.quoter, this.subjectId);
     }
 
     @Override
     public ShowMarksCommandDto withStage(int stage) {
-        return this.stage == stage ? this : new ShowMarksCommandDto(this.commandIndex, stage, this.accountId, this.subjectId);
+        return this.stage == stage ? this : new ShowMarksCommandDto(this.commandIndex, stage, this.accountId, this.quoter, this.subjectId);
     }
 
     public ShowMarksCommandDto withAccountId(Long accountId) {
-        return new ShowMarksCommandDto(this.commandIndex, this.stage, accountId, this.subjectId);
+        return new ShowMarksCommandDto(this.commandIndex, this.stage, accountId, this.quoter, this.subjectId);
     }
 
     public ShowMarksCommandDto withSubjectId(Long subjectId) {
-        return new ShowMarksCommandDto(this.commandIndex, this.stage, this.accountId, subjectId);
+        return new ShowMarksCommandDto(this.commandIndex, this.stage, this.accountId, this.quoter, subjectId);
+    }
+
+    public ShowMarksCommandDto withQuoter(Integer quoter) {
+        return new ShowMarksCommandDto(this.commandIndex, this.stage, this.accountId, quoter, this.subjectId);
     }
 }

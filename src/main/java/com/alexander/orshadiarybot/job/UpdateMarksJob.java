@@ -13,8 +13,10 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 @Component
@@ -28,28 +30,29 @@ public class UpdateMarksJob implements Runnable {
     private MessageProperty messageProperty;
 
     @Override
-    @Transactional
     public void run() {
         log.info("Starting UpdateMarksJob");
-        List<Account> accounts = accountService.findAll();
-        accounts.forEach(account -> {
-            log.info("Updating marks for account {}", account.getId());
-            List<Mark> localMarks = markService.findMarksByAccount(account);
-            List<Mark> actualMarks = siteDataService.findMarksByAccounts(account);
-            Set<Mark> newMarks = excludeSame(actualMarks, localMarks);
-            Set<Mark> deletedMarks = excludeSame(localMarks, actualMarks);
-            log.info("New marks for account {}: {}", account.getId(), newMarks);
-            log.info("Deleted marks from account {}: {}", account.getId(), deletedMarks);
-            markService.rebaseMarks(account, actualMarks);
-            if (!newMarks.isEmpty()) {
-                String message = String.format(messageProperty.getNewMarksMessage(),
-                        account.getFullName(),
-                        newMarks.stream()
-                        .map(mark -> mark.getDate().format(DateTimeFormatter.ofPattern("dd.MM")) + " " + mark.getSubject().getName() + " " + mark.getValue())
-                        .collect(Collectors.joining("\n")));
-                account.getOwners().forEach(owner -> chatService.sendMessage(owner, message));
-            }
-        });
+        accountService.findAll().forEach(this::updateMarksForAccount);
+    }
+
+    @Transactional
+    protected void updateMarksForAccount(Account account) {
+        log.info("Updating marks for account {}", account.getId());
+        List<Mark> localMarks = markService.findMarksByAccount(account);
+        List<Mark> actualMarks = siteDataService.findMarksByAccounts(account);
+        Set<Mark> newMarks = excludeSame(actualMarks, localMarks);
+        Set<Mark> deletedMarks = excludeSame(localMarks, actualMarks);
+        log.info("New marks for account {}: {}", account.getId(), newMarks);
+        log.info("Deleted marks from account {}: {}", account.getId(), deletedMarks);
+        markService.rebaseMarks(account, actualMarks);
+        if (!newMarks.isEmpty()) {
+            String message = String.format(messageProperty.getNewMarksMessage(),
+                    account.getFullName(),
+                    newMarks.stream()
+                    .map(mark -> mark.getDate().format(DateTimeFormatter.ofPattern("dd.MM")) + " " + mark.getSubject().getName() + " " + mark.getValue())
+                    .collect(Collectors.joining("\n")));
+            account.getOwners().forEach(owner -> chatService.sendMessage(owner, message));
+        }
     }
 
     private Set<Mark> excludeSame(List<Mark> base, List<Mark> toRemove) {

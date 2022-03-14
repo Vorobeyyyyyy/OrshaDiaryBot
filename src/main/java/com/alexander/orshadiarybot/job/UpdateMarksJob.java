@@ -40,6 +40,7 @@ public class UpdateMarksJob implements Runnable {
             Set<Mark> deletedMarks = excludeSame(localMarks, actualMarks);
             log.info("New marks for account {}: {}", account.getId(), newMarks);
             log.info("Deleted marks from account {}: {}", account.getId(), deletedMarks);
+            markService.rebaseMarks(account, actualMarks);
             if (!newMarks.isEmpty()) {
                 String message = String.format(messageProperty.getNewMarksMessage(),
                         account.getFullName(),
@@ -48,7 +49,6 @@ public class UpdateMarksJob implements Runnable {
                         .collect(Collectors.joining("\n")));
                 account.getOwners().forEach(owner -> chatService.sendMessage(owner, message));
             }
-            markService.rebaseMarks(account, actualMarks);
         });
     }
 

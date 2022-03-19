@@ -3,12 +3,9 @@ package com.alexander.orshadiarybot.model.domain;
 import com.alexander.orshadiarybot.model.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -26,6 +23,10 @@ public class Account extends BaseEntity {
     @ElementCollection
     @CollectionTable(name = "account_onwers")
     private Set<Long> owners;
+
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastMarksUpdate;
 
     public void addOwner(long chatId) {
         owners.add(chatId);

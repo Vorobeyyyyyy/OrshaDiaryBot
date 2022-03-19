@@ -9,6 +9,7 @@ import com.alexander.orshadiarybot.service.MarkService;
 import com.alexander.orshadiarybot.service.SiteDataService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
@@ -22,26 +23,19 @@ import java.util.stream.Collectors;
 @Component
 @AllArgsConstructor
 @Log4j2
-public class UpdateMarksJob implements Runnable {
+public class UpdateMarksJob {
     private MarkService markService;
     private AccountService accountService;
     private SiteDataService siteDataService;
     private ChatService chatService;
     private MessageProperty messageProperty;
 
-    @Override
+    @Transactional
+    @Scheduled(fixedRate = 5 * 60 * 1000) // 5 minutes
     public void run() {
-        log.info("Starting UpdateMarksJob");
-        accountService.findAll().forEach(account -> {
-            try {
-                updateMarksForAccount(account);
-            } catch (Exception e) {
-                log.error("Error while updating marks for account {}", account.getId(), e);
-            }
-        });
+        accountService.findAccountToUpdate().ifPresent(this::updateMarksForAccount);
     }
 
-    @Transactional
     protected void updateMarksForAccount(Account account) {
         log.info("Updating marks for account {}", account.getId());
         List<Mark> localMarks = markService.findMarksByAccount(account);

@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -46,6 +47,7 @@ public class MarkServiceImpl implements MarkService {
                         mark::setSubject,
                         () -> persistAndSet(subjects, mark)));
         markRepository.saveAll(marks);
+        account.setLastMarksUpdate(new Date());
     }
 
     private void persistAndSet(List<Subject> subjects, Mark mark) {

@@ -1,11 +1,13 @@
 package com.alexander.orshadiarybot.service.impl;
 
 import com.alexander.orshadiarybot.config.property.UrlProperty;
+import com.alexander.orshadiarybot.exception.RequestMarksException;
 import com.alexander.orshadiarybot.model.domain.Account;
 import com.alexander.orshadiarybot.model.domain.Mark;
 import com.alexander.orshadiarybot.parser.HtmlParser;
 import com.alexander.orshadiarybot.service.AccountService;
 import com.alexander.orshadiarybot.service.SiteDataService;
+import com.alexander.orshadiarybot.util.RetryUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpEntity;
@@ -25,6 +27,9 @@ import java.util.List;
 @AllArgsConstructor
 @Log4j2
 public class SiteDataServiceImpl implements SiteDataService {
+
+    private static final int RETRIES = 3;
+
     private RestTemplate restTemplate;
     private AccountService accountService;
     private UrlProperty urlProperty;
@@ -65,7 +70,9 @@ public class SiteDataServiceImpl implements SiteDataService {
         httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         httpHeaders.add(HttpHeaders.COOKIE, cookies);
         HttpEntity<MultiValueMap<String, Integer>> entity = new HttpEntity<>(postParams, httpHeaders);
-        ResponseEntity<String> response = restTemplate.postForEntity(urlProperty.getMarks(), entity, String.class);
+        ResponseEntity<String> response = RetryUtil.tryAndGetOrElseThrow(RETRIES, 500L,
+                () -> restTemplate.postForEntity(urlProperty.getMarks(), entity, String.class),
+                () -> new RequestMarksException("Can't get marks for " + calendar.getTime()));
         return parser.parseMarks(response.getBody());
     }
 }

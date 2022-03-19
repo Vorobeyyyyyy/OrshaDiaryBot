@@ -32,7 +32,13 @@ public class UpdateMarksJob implements Runnable {
     @Override
     public void run() {
         log.info("Starting UpdateMarksJob");
-        accountService.findAll().forEach(this::updateMarksForAccount);
+        accountService.findAll().forEach(account -> {
+            try {
+                updateMarksForAccount(account);
+            } catch (Exception e) {
+                log.error("Error while updating marks for account {}", account.getId(), e);
+            }
+        });
     }
 
     @Transactional

@@ -85,7 +85,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Optional<Account> findAccountToUpdate() {
         Date maxDate = Date.from(Instant.now().minus(botProperty.getUpdateMarksPeriod()));
-        return accountRepository.findAccountToUpdate(maxDate);
+        return accountRepository.findTopByLastMarksUpdateBeforeOrderByLastMarksUpdateAsc(maxDate);
     }
 
     private String checkAndExtractName(String phone, String password) {

@@ -18,6 +18,5 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     Account findById(long id);
 
-    @Query("select a from Account a where a.lastMarksUpdate <= :maxDate order by a.lastMarksUpdate asc")
-    Optional<Account> findAccountToUpdate(@Param("maxDate") Date maxDate);
+    Optional<Account> findTopByLastMarksUpdateBeforeOrderByLastMarksUpdateAsc(Date maxDate);
 }

@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @Data
 @EqualsAndHashCode(callSuper = true, of = {})
 public class Mark extends BaseEntity {
+
     @ManyToOne
     private Account account;
 

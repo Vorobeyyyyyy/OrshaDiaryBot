@@ -15,6 +15,7 @@ import javax.persistence.Table;
 @Data
 @EqualsAndHashCode(callSuper = true, of = {})
 public class Subject extends BaseEntity {
+
     public Subject(String name) {
         this.name = name;
     }

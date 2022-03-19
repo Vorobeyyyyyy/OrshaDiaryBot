@@ -16,9 +16,13 @@ import java.util.Set;
 @Data
 @EqualsAndHashCode(callSuper = true, of = {})
 public class Account extends BaseEntity {
+
     private String phone;
+
     private String password;
+
     private String fullName;
+
     @ElementCollection
     @CollectionTable(name = "account_onwers")
     private Set<Long> owners;

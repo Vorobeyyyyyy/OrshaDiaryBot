@@ -1,7 +1,7 @@
 package com.alexander.orshadiarybot.service.impl;
 
 import com.alexander.orshadiarybot.config.property.UrlProperty;
-import com.alexander.orshadiarybot.exception.RequestMarksException;
+import com.alexander.orshadiarybot.exception.FetchDataException;
 import com.alexander.orshadiarybot.model.domain.Account;
 import com.alexander.orshadiarybot.model.domain.Mark;
 import com.alexander.orshadiarybot.parser.HtmlParser;
@@ -72,7 +72,7 @@ public class SiteDataServiceImpl implements SiteDataService {
         HttpEntity<MultiValueMap<String, Integer>> entity = new HttpEntity<>(postParams, httpHeaders);
         ResponseEntity<String> response = RetryUtil.tryAndGetOrElseThrow(RETRIES, 500L,
                 () -> restTemplate.postForEntity(urlProperty.getMarks(), entity, String.class),
-                () -> new RequestMarksException("Can't get marks for " + calendar.getTime()));
+                () -> new FetchDataException("Can't get marks for " + calendar.getTime()));
         return parser.parseMarks(response.getBody());
     }
 }

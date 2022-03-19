@@ -3,10 +3,12 @@ package com.alexander.orshadiarybot.service.impl;
 import com.alexander.orshadiarybot.config.property.MessageProperty;
 import com.alexander.orshadiarybot.config.property.UrlProperty;
 import com.alexander.orshadiarybot.exception.BotException;
+import com.alexander.orshadiarybot.exception.FetchDataException;
 import com.alexander.orshadiarybot.model.domain.Account;
 import com.alexander.orshadiarybot.parser.HtmlParser;
 import com.alexander.orshadiarybot.repository.AccountRepository;
 import com.alexander.orshadiarybot.service.AccountService;
+import com.alexander.orshadiarybot.util.RetryUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.*;
@@ -23,6 +25,9 @@ import java.util.Set;
 @AllArgsConstructor
 @Log4j2
 public class AccountServiceImpl implements AccountService {
+
+    private static final int RETRIES = 3;
+
     private RestTemplate restTemplate;
     private UrlProperty urlProperty;
     private MessageProperty messageProperty;
@@ -87,7 +92,8 @@ public class AccountServiceImpl implements AccountService {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(postParams, httpHeaders);
-        ResponseEntity<String> response = restTemplate.postForEntity(urlProperty.getLogin(), entity, String.class);
-        return response;
+        return RetryUtil.tryAndGetOrElseThrow(5 ,500L,
+                () -> restTemplate.postForEntity(urlProperty.getLogin(), entity, String.class),
+                () -> new FetchDataException("Cant fetch data from server after " + RETRIES + " attempts"));
     }
 }

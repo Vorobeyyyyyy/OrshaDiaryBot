@@ -14,7 +14,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 @Log4j2
@@ -33,9 +32,9 @@ public class AddAccountCommand extends Command {
         String phone = chatService.askAndWaitForUpdate(chatId, messageProperty.getEnterPhoneMessage()).message().text();
         String password = chatService.askAndWaitForUpdate(chatId, messageProperty.getEnterPasswordMessage()).message().text();
 
-        Account account = accountService.addAccount(phone, password, chatId);
+        Account account = accountService.addAccount(phone, password.toUpperCase(), chatId);
         chatService.sendMessage(chatId, messageProperty.getAccountWasAddedMessage());
-        List<Mark> marks = siteDataService.findMarksByAccounts(account);
+        List<Mark> marks = siteDataService.findMarksByAccount(account);
         markService.rebaseMarks(account, marks);
     }
 

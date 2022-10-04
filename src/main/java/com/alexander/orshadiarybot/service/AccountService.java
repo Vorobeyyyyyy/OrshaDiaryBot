@@ -17,4 +17,6 @@ public interface AccountService {
     List<Account> findAll();
 
     Optional<Account> findAccountToUpdate();
+
+    Optional<Account> findAccountForSoftUpdate();
 }

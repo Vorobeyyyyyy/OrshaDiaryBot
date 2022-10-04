@@ -126,12 +126,22 @@ public class ShowMarksCommand extends StagedCommand<ShowMarksCommandDto> {
     private void showMarks(long chatId, ShowMarksCommandDto dto, Update update) {
         List<Mark> marks = markService.findMarksByAccountAndSubjectId(dto.getAccountId(), dto.getSubjectId());
         Subject subject = subjectService.findById(dto.getSubjectId());
-        List<String> markValues = marks.stream()
+
+        List<Integer> marksValues = marks.stream()
                 .filter(quoterPredicates.get(dto.getQuoter()))
-                .map(Mark::getValue)
+                .map(Mark::getValue).collect(Collectors.toList());
+
+        double average = marksValues.stream().mapToDouble(Integer::doubleValue).average().orElse(0);
+
+        List<String> markValuesString = marksValues.stream()
                 .map(String::valueOf)
                 .collect(Collectors.toList());
-        String resultMessage = String.format(messageProperty.getMarksBySubjectMessage(), subject.getName(), String.join(", ", markValues));
+
+        String resultMessage = String.format(
+                messageProperty.getMarksBySubjectMessage(),
+                subject.getName(),
+                String.join(", ", markValuesString),
+                average);
         chatService.sendMessage(chatId, resultMessage);
     }
 

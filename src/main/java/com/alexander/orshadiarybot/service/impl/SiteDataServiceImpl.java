@@ -36,7 +36,7 @@ public class SiteDataServiceImpl implements SiteDataService {
     private HtmlParser parser;
 
     @Override
-    public List<Mark> findMarksByAccounts(Account account) {
+    public List<Mark> findMarksByAccount(Account account) {
         Calendar now = Calendar.getInstance();
         Calendar summer = Calendar.getInstance();
         summer.set(Calendar.DATE, 7);
@@ -58,6 +58,21 @@ public class SiteDataServiceImpl implements SiteDataService {
             marks.addAll(requestMarksForWeek(calendar, cookies));
             calendar.add(Calendar.DATE, 7);
         }
+        return marks;
+    }
+
+    @Override
+    public List<Mark> findMarksByAccountForLastWeeks(Account account, int weekCount) {
+        Calendar calendar = Calendar.getInstance();
+
+        String cookies = accountService.takeCookies(account);
+
+        List<Mark> marks = new ArrayList<>();
+        for (int i = 0; i < weekCount; i++) {
+            marks.addAll(requestMarksForWeek(calendar, cookies));
+            calendar.add(Calendar.DATE,-7);
+        }
+
         return marks;
     }
 

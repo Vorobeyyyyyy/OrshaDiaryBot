@@ -12,7 +12,9 @@ spring:
 
 bot:
   token: ${BOT_TOKEN}
-  updateMarksPeriod: 1h
+  updateMarksPeriod: 48h
+  softUpdateMarksPeriod: 2h
+  softUpdateWeekCount: 3
 
 url:
   login: http://diary.goroo-orsha.by/index.php?option=com_content&view=article&id=9&Itemid=12
@@ -26,7 +28,7 @@ message:
   chooseAccountUserMessage: "Выберите аккаунт"
   wrongNameMessage: "Неверное имя"
   chooseSubjectMessage: "Выберите предмет"
-  marksBySubjectMessage: "Оценки по предмету %s: %s"
+  marksBySubjectMessage: "Оценки по предмету %s: %s\nСрeдний балл %.2f"
   marksMessage: "Оценки %s:\n%s"
   takeCookiesErrorMessage: "Произошла ошибка при попытке доступа к аккаунту %s"
   accountWasAddedMessage: "Аккаунт был успешно добавлен"
@@ -42,6 +44,6 @@ message:
   chooseQuoterMessage: "Выберите четверть"
 
 quoter:
-  quoterTwoBegin: 2021-11-07
-  quoterThreeBegin: 2022-01-01
-  quoterFourBegin: 2022-03-03
+  quoterTwoBegin: 2022-11-04
+  quoterThreeBegin: 2023-01-01
+  quoterFourBegin: 2023-03-29

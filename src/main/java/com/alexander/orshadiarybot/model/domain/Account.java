@@ -28,6 +28,10 @@ public class Account extends BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastMarksUpdate;
 
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastMarksSoftUpdate;
+
     public void addOwner(long chatId) {
         owners.add(chatId);
     }

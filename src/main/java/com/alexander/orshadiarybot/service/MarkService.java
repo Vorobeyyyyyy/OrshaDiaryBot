@@ -13,4 +13,8 @@ public interface MarkService {
     List<Mark> findMarksByAccountAndSubjectId(long accountId, long subjectId);
 
     void rebaseMarks(Account account, List<Mark> marks);
+
+    void rebaseLastWeeksMarks(Account account, int weekCount, List<Mark> marks);
+
+    List<Mark> findMarksByAccountForLastWeeks(long accountId, int softUpdateWeekCount);
 }

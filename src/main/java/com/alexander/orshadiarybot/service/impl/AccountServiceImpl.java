@@ -19,7 +19,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
-import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
@@ -86,6 +85,12 @@ public class AccountServiceImpl implements AccountService {
     public Optional<Account> findAccountToUpdate() {
         Date maxDate = Date.from(Instant.now().minus(botProperty.getUpdateMarksPeriod()));
         return accountRepository.findTopByLastMarksUpdateBeforeOrderByLastMarksUpdateAsc(maxDate);
+    }
+
+    @Override
+    public Optional<Account> findAccountForSoftUpdate() {
+        Date maxDate = Date.from(Instant.now().minus(botProperty.getSoftUpdateMarksPeriod()));
+        return accountRepository.findTopByLastMarksSoftUpdateBeforeOrderByLastMarksSoftUpdateAsc(maxDate);
     }
 
     private String checkAndExtractName(String phone, String password) {

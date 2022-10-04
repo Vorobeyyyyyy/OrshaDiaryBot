@@ -10,7 +10,12 @@ import java.time.Duration;
 @ConfigurationProperties(prefix = "bot")
 @Data
 public class BotProperty {
+
     private String token;
 
     private Duration updateMarksPeriod;
+
+    private Duration softUpdateMarksPeriod;
+
+    private int softUpdateWeekCount;
 }

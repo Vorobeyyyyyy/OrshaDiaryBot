@@ -16,6 +16,6 @@ class SiteDataServiceImplTest {
         Account account = new Account();
         account.setPhone("+375295952236");
         account.setPassword("VD2236");
-        System.out.println(siteDataService.findMarksByAccounts(account));
+        System.out.println(siteDataService.findMarksByAccount(account));
     }
 }

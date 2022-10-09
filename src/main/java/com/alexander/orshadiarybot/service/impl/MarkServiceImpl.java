@@ -7,6 +7,7 @@ import com.alexander.orshadiarybot.repository.MarkRepository;
 import com.alexander.orshadiarybot.repository.SubjectRepository;
 import com.alexander.orshadiarybot.service.MarkService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class MarkServiceImpl implements MarkService {
 
     private MarkRepository markRepository;
@@ -64,6 +66,7 @@ public class MarkServiceImpl implements MarkService {
     @Override
     public List<Mark> findMarksByAccountForLastWeeks(long accountId, int softUpdateWeekCount) {
         LocalDate date = getWeekStartDate(softUpdateWeekCount);
+        log.info("Week start date for account {}: {}", accountId, date);
 
         return markRepository.findAllByAccountIdAndDateFrom(accountId, date);
     }

@@ -6,7 +6,7 @@ import java.util.TimeZone;
 public class CalendarUtils {
 
     public static Calendar createCalendar() {
-        Calendar calendar = CalendarUtils.createCalendar();
+        Calendar calendar = Calendar.getInstance();
         calendar.setFirstDayOfWeek(Calendar.MONDAY);
         calendar.setTimeZone(TimeZone.getTimeZone("UTC+3"));
 

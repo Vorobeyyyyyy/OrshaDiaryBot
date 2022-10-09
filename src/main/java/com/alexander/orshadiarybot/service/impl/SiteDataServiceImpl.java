@@ -7,6 +7,7 @@ import com.alexander.orshadiarybot.model.domain.Mark;
 import com.alexander.orshadiarybot.parser.HtmlParser;
 import com.alexander.orshadiarybot.service.AccountService;
 import com.alexander.orshadiarybot.service.SiteDataService;
+import com.alexander.orshadiarybot.util.CalendarUtils;
 import com.alexander.orshadiarybot.util.RetryUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -37,12 +38,12 @@ public class SiteDataServiceImpl implements SiteDataService {
 
     @Override
     public List<Mark> findMarksByAccount(Account account) {
-        Calendar now = Calendar.getInstance();
-        Calendar summer = Calendar.getInstance();
+        Calendar now = CalendarUtils.createCalendar();
+        Calendar summer = CalendarUtils.createCalendar();
         summer.set(Calendar.DATE, 7);
         summer.set(Calendar.MONTH, Calendar.JULY);
 
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = CalendarUtils.createCalendar();
         calendar.set(Calendar.MONTH, Calendar.SEPTEMBER);
         calendar.set(Calendar.DATE, 1);
         if (now.get(Calendar.MONTH) < Calendar.SEPTEMBER) {
@@ -63,7 +64,7 @@ public class SiteDataServiceImpl implements SiteDataService {
 
     @Override
     public List<Mark> findMarksByAccountForLastWeeks(Account account, int weekCount) {
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = CalendarUtils.createCalendar();
 
         String cookies = accountService.takeCookies(account);
 

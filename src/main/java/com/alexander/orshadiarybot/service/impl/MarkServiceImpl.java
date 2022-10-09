@@ -6,6 +6,7 @@ import com.alexander.orshadiarybot.model.domain.Subject;
 import com.alexander.orshadiarybot.repository.MarkRepository;
 import com.alexander.orshadiarybot.repository.SubjectRepository;
 import com.alexander.orshadiarybot.service.MarkService;
+import com.alexander.orshadiarybot.util.CalendarUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -76,7 +77,7 @@ public class MarkServiceImpl implements MarkService {
             throw new IllegalArgumentException("Min weekCount is 1");
         }
 
-        Calendar calendar = Calendar.getInstance();
+        Calendar calendar = CalendarUtils.createCalendar();
         calendar.add(Calendar.DATE, (weekCount - 1) * -7);
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         LocalDate date = LocalDate.ofInstant(calendar.toInstant(), calendar.getTimeZone().toZoneId());

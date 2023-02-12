@@ -3,6 +3,8 @@ services:
   orshadiary:
     network_mode: host
     image: orshadiary
+    env_file:
+      - .env
     build:
       context: ../
       dockerfile: ./docker/dockerfile

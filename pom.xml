@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.alexander</groupId>
     <artifactId>OrshaDiaryBot</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>OrshaDiaryBot</name>
     <description>OrshaDiaryBot</description>
     <properties>
@@ -82,6 +82,7 @@
     </dependencies>
 
     <build>
+        <finalName>OrshaDiary</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -98,4 +99,11 @@
         </plugins>
     </build>
 
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/Vorobeyyyyyy/OrshaDiaryBot</url>
+        </repository>
+    </distributionManagement>
 </project>

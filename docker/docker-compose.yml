@@ -3,5 +3,5 @@ services:
   orshadiary:
     image: orshadiary
     build:
-      context: ../.
-      dockerfile: docker/dockerfile
+      context: ../
+      dockerfile: ./docker/dockerfile

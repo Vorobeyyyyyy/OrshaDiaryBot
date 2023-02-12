@@ -1,6 +1,7 @@
 version: '3'
 services:
   orshadiary:
+    dns: 8.8.8.8
     image: orshadiary
     build:
       context: ../

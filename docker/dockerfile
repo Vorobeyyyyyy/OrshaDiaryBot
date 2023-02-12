@@ -1,23 +1,11 @@
 # Use an openjdk 17 base image as the builder stage
-FROM maven:3.8.3-openjdk-17 AS builder
+FROM openjdk:17
 
 # Set the working directory to /app
 WORKDIR /app
 
 # Copy the source code to the container
-COPY . /app
-
-# Build the application with Maven
-RUN mvn clean package
-
-# Use an openjdk 17 base image as the final image
-FROM openjdk:17
-
-# Copy the jar file from the builder stage
-COPY --from=builder /app/target/OrshaDiary.jar /app/OrshaDiary.jar
-
-# Set the working directory to /app
-WORKDIR /app
+COPY target/OrshaDiary.jar /app
 
 # Run the jar file
 CMD ["java", "-jar", "OrshaDiary.jar"]
